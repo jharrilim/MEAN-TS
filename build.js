@@ -1,28 +1,29 @@
-const $ = require('shelljs')
-const fs = require('fs')
-const path = require('path')
+'use strict';
 
-$.config.fatal = true
-const rootDir = __dirname
+((mode) => {
+    mode = mode.toLowerCase() == 'prod' ? 'prod' : 'dev';
+    
+    const $    = require('shelljs');
+    const fs   = require('fs');
+    const path = require('path');
+    const pkg  = require('root-require')('package.json');
+    $.config.fatal = true;
+    const rootDir  = __dirname;
+    
+    console.log(`# Building ${pkg.name} : ${pkg.version}`);
+    if (pgk.author) {
+        console.log(`## Author: ${pkg.author}`);
+    }
+    $.cd(rootDir);
+    
+    console.log('## Restoring packages...');
+    $.exec('npm install');
+    console.log('## Packages restored.');
 
-console.log('# Build Express app'); {
-    $.cd(rootDir)
 
-    console.log('## Restore packages')
-    $.exec('npm install')
-
-    console.log('## Build app')
-    $.exec('npm run "build:prod"')
-}
-
-console.log('# Build Angular app'); {
-    $.cd(rootDir + '/ng')
-
-    console.log('## Restore packages')
-    $.exec('npm install')
-
-    console.log('## Build app')
-    $.exec('npm run "build:prod"')
-}
-
-$.cd(rootDir)
+    console.log(`## Running ${mode} build...`);
+    $.exec(`npm run "build:${mode == 'prod' ? 'prod' : ''}"`);
+    console.log('## Build finished.');
+    $.cd(rootDir);
+    
+})(process.argv[2] || 'dev');
