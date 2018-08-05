@@ -4,7 +4,6 @@
     "main": "bin/www",
     "private": true,
     "scripts": {
-        "heroku-postbuild": "node build.js",
         "start": "node \"bin/www.js\"",
         "build": "npm run tsc -- --watch false",
         "build:watch": "npm run tsc -- --watch true",
